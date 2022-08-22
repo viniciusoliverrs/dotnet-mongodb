@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Mongo.API.Controllers.Inputs;
+using Mongo.API.Controllers.Outputs;
+using Mongo.API.Data.Repositories;
 using Mongo.API.Domain.Entities;
 using Mongo.API.Domain.Enums;
 using Mongo.API.Domain.ValueObjects;
@@ -9,13 +11,11 @@ namespace Mongo.API.Controllers;
 [ApiController]
 public class RestauranteController : ControllerBase
 {
-    // private readonly RestauranteRepository _restauranteRepository;
-
-    // public RestauranteController(RestauranteRepository restauranteRepository)
-    // {
-    //     _restauranteRepository = restauranteRepository;
-    // }
-
+    private readonly RestauranteRepository _restauranteRepository;
+    public RestauranteController(RestauranteRepository restauranteRepository)
+    {
+        _restauranteRepository = restauranteRepository;
+    }
     [HttpPost("restaurante")]
     public ActionResult IncluirRestaurante([FromBody] RestauranteInclusao restauranteInclusao)
     {
@@ -40,12 +40,33 @@ public class RestauranteController : ControllerBase
                 });
         }
 
-        // _restauranteRepository.Inserir(restaurante);
+        _restauranteRepository.Inserir(restaurante);
 
         return Ok(
             new
             {
                 data = "Restaurante inserido com sucesso"
+            }
+        );
+    }
+
+    [HttpGet("restaurante/todos")]
+    public async Task<ActionResult> ObterRestaurantes()
+    {
+        var restaurantes = await _restauranteRepository.ObterTodos();
+
+        var listagem = restaurantes.Select(_ => new RestauranteListagem
+        {
+            Id = _.Id,
+            Nome = _.Nome,
+            Cozinha = (int)_.Cozinha,
+            Cidade = _.Endereco.Cidade
+        });
+
+        return Ok(
+            new
+            {
+                data = listagem
             }
         );
     }
