@@ -1,3 +1,5 @@
+using System;
+
 namespace Mongo.API.Domain.Enums
 {
     public enum ECozinha
@@ -13,10 +15,10 @@ namespace Mongo.API.Domain.Enums
     {
         public static ECozinha ConverterDeInteiro(int valor)
         {
-            if(Enum.TryParse(valor.ToString(), out ECozinha cozinha))
+            if (Enum.TryParse(valor.ToString(), out ECozinha cozinha))
                 return cozinha;
 
-            throw new ArgumentOutOfRangeException("valor", valor, "O valor não é válido para o tipo ECozinha");
+            throw new ArgumentOutOfRangeException("cozinha");
         }
     }
 }

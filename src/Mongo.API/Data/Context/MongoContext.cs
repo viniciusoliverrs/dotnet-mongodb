@@ -9,7 +9,7 @@ namespace Mongo.API.Data.Context
 {
     public class MongoContext
     {
-         public IMongoDatabase DB { get; }
+        public IMongoDatabase DB { get; }
 
         public MongoContext(IConfiguration configuration)
         {

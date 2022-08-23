@@ -22,7 +22,6 @@ namespace Mongo.API.Domain.ValueObjects
 
         public ValidationResult ValidationResult { get; set; }
 
-        
         public bool Validar()
         {
             ValidarLogradouro();

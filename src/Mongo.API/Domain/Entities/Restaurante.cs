@@ -1,20 +1,18 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using FluentValidation;
-using FluentValidation.Results;
 using Mongo.API.Domain.Enums;
 using Mongo.API.Domain.ValueObjects;
+using FluentValidation;
+using FluentValidation.Results;
 
 namespace Mongo.API.Domain.Entities
 {
-    public class Restaurante  : AbstractValidator<Restaurante>
+    public class Restaurante : AbstractValidator<Restaurante>
     {
         public Restaurante(string nome, ECozinha cozinha)
         {
             Nome = nome;
             Cozinha = cozinha;
+            Avaliacoes = new List<Avaliacao>();
         }
         
         public Restaurante(string id, string nome, ECozinha cozinha)
@@ -22,18 +20,25 @@ namespace Mongo.API.Domain.Entities
             Id = id;
             Nome = nome;
             Cozinha = cozinha;
+            Avaliacoes = new List<Avaliacao>();
         }
 
         public string Id { get; private set; }
         public string Nome { get; private set; }
         public ECozinha Cozinha { get; private set; }
         public Endereco Endereco { get; private set; }
+        public List<Avaliacao> Avaliacoes { get; private set; }
 
         public ValidationResult ValidationResult { get; set; }
 
         public void AtribuirEndereco(Endereco endereco)
         {
             Endereco = endereco;
+        }
+
+        public void InserirAvaliacao(Avaliacao avaliacao)
+        {
+            Avaliacoes.Add(avaliacao);
         }
 
         public virtual bool Validar()
